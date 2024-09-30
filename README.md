@@ -1,7 +1,7 @@
 
 # ShowTime - 透明窗口时光追踪器
 
-![主界面截图](https://github.com/您的用户名/ShowTime/raw/main/screenshots/main_interface.png)
+![主界面截图](https://github.com/liaanj/ShowTime/blob/main/doc/image.png)
 *主界面显示解锁时间和应用使用时间。*
 
 **ShowTime** 是一款基于 PySide6 开发的 Windows 专用透明窗口应用，旨在帮助用户追踪系统解锁时间和当前应用的使用时长。通过智能的全屏检测与隐藏功能，ShowTime 为您的时间管理提供直观且不干扰的支持，让您更高效地掌控每一分每一秒。
