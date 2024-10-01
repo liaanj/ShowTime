@@ -48,60 +48,21 @@
 
 *提醒设置界面，帮助用户配置提醒通知。*
 
-## 安装指南
-
-### 前置条件
-
-- **操作系统**：Windows 10 或更高版本
-- **Python**：Python 3.7+
-- **依赖库**：
-  - PySide6
-  - psutil
-  - pywin32
-
-### 安装步骤
-
-1. **克隆仓库**
-
-   ```bash
-   git clone https://github.com/您的用户名/ShowTime.git
-   cd ShowTime
-   ```
-
-2. **创建虚拟环境（可选）**
-
-   ```bash
-   python -m venv venv
-   venv\Scripts\activate
-   ```
-
-3. **安装依赖**
-
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **运行程序**
-
-   ```bash
-   python showtime.py
-   ```
-
 ## 使用指南
 
-1. **启动程序**：双击运行 `showtime.py` 或在命令行中执行 `python showtime.py`。
-2. **主界面**：程序启动后会在屏幕上显示一个透明窗口，展示解锁时间和当前应用的使用时间。
+1. **启动程序**：双击运行 `showtime.exe` 或在命令行中执行 `python showtime.py`。
+2. **主界面**：程序启动后会在屏幕上显示一个透明窗口，展示解锁时间和当前应用的使用时间，拖动将其放到合适的地方。
 3. **右键菜单**：右键点击窗口，打开上下文菜单，提供以下选项：
    - 清除时间
    - 设置提醒
    - 外观设置
    - 暂停/继续计时
    - 开机自启
-   - 全屏隐藏
    - 退出应用
+   - 关于软件
 4. **设置提醒**：通过右键菜单中的“设置提醒”选项，您可以根据解锁时间或应用使用时间设置提醒。
 5. **外观设置**：在“外观设置”中，您可以自定义字体大小、颜色、窗口尺寸、进度条颜色等。
-6. **全屏隐藏**：在设置中启用“全屏隐藏”，程序将在全屏应用启动时自动隐藏，避免干扰您的使用体验。
+6. **全屏隐藏**：在全屏状态下，程序会自动记录您所拖动到的位置，或者可以将其拖动到屏幕边缘以进行隐藏。在位置出问题的时候可以打开配置文件调整位置并重启软件。
 
 ## 配置说明
 
@@ -143,11 +104,5 @@
 
 ## 许可证
 
-本项目采用 MIT 许可证。详情请参阅 [LICENSE](https://github.com/您的用户名/ShowTime/blob/main/LICENSE) 文件。
+本项目采用 MIT 许可证。详情请参阅 [LICENSE](https://github.com/liaanj/ShowTime/blob/main/LICENSE) 文件。
 
-## 联系方式
-
-如有任何问题或建议，请通过以下方式联系我：
-
-- **GitHub Issues**：在 [Issues](https://github.com/您的用户名/ShowTime/issues) 区提交。
-- **电子邮件**：发送邮件至 [your_email@example.com](mailto:your_email@example.com)。
