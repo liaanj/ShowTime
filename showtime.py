@@ -9,14 +9,11 @@ import win32gui
 import win32process
 import psutil
 import ctypes
-import win32con
 from PySide6 import QtWidgets, QtCore, QtGui
 import xml.etree.ElementTree as ET
 import getpass
-import winreg
 import subprocess
 from PySide6.QtCore import QSharedMemory
-import platform
 import win32api
 
 # 配置文件路径
@@ -564,7 +561,6 @@ class TransparentWindow(QtWidgets.QWidget):
             self.update_window_geometry()
         except Exception as e:
             QtWidgets.QMessageBox.warning(self, "初始化错误", f"初始化界面时发生错误: {e}")
-    
     def show_about_dialog(self):
         """
         显示关于对话框，包含作者名称和 GitHub 地址
@@ -584,7 +580,7 @@ class TransparentWindow(QtWidgets.QWidget):
 
             # 添加 GitHub 地址，设置为可点击的链接
             github_label = QtWidgets.QLabel()
-            github_label.setText('<a href="https://github.com/yourusername/yourproject">GitHub 地址：点击访问项目</a>')
+            github_label.setText('<a href="https://github.com/liaanj/ShowTime">GitHub 地址：点击访问项目</a>')
             github_label.setAlignment(QtCore.Qt.AlignCenter)
             github_label.setOpenExternalLinks(True)  # 允许打开外部链接
             layout.addWidget(github_label)
@@ -598,20 +594,6 @@ class TransparentWindow(QtWidgets.QWidget):
             dialog.exec()
         except Exception as e:
             QtWidgets.QMessageBox.warning(self, "关于对话框错误", f"无法显示关于对话框: {e}")
-
-    def check_is_fullscreen(self):
-        hwnd = win32gui.GetForegroundWindow()
-        if hwnd == 0:
-            return False
-        # 获取窗口矩形
-        rect = win32gui.GetWindowRect(hwnd)
-        # 获取屏幕尺寸
-        screen_rect = QtWidgets.QApplication.primaryScreen().geometry()
-        # 检查窗口是否覆盖整个屏幕
-        if rect == (screen_rect.left(), screen_rect.top(), screen_rect.right(), screen_rect.bottom()):
-            return True
-        else:
-            return False
 
     def check_fullscreen(self):
         """
@@ -652,22 +634,6 @@ class TransparentWindow(QtWidgets.QWidget):
             # 无前台窗口，可能性较小，忽略
             pass
 
-    def is_foreground_fullscreen(self):
-        hwnd = win32gui.GetForegroundWindow()
-        if hwnd:
-            # 获取自身窗口的实际句柄
-            self_hwnd = self.effectiveWinId().__int__()
-            # 忽略自身窗口
-            if hwnd == self_hwnd:
-                return False
-            rect = win32gui.GetWindowRect(hwnd)
-            width = rect[2] - rect[0]
-            height = rect[3] - rect[1]
-            screen_width = win32api.GetSystemMetrics(win32con.SM_CXSCREEN)
-            screen_height = win32api.GetSystemMetrics(win32con.SM_CYSCREEN)
-            if width == screen_width and height == screen_height:
-                return True
-        return False
 
     def on_enter_fullscreen(self):
         # 移动到记录的全屏位置
@@ -683,7 +649,6 @@ class TransparentWindow(QtWidgets.QWidget):
             self.move(pos['x'], pos['y'])
         # 如果窗口被隐藏，确保它显示出来
         self.show()
-        self.is_window_shown = True
 
     def update_layout(self):
         try:
@@ -820,7 +785,7 @@ class TransparentWindow(QtWidgets.QWidget):
             self.config['fullscreen_position'] = {'x': self.x(), 'y': self.y()}
         else:
             self.config['non_fullscreen_position'] = {'x': self.x(), 'y': self.y()}
-
+    
     def contextMenuEvent(self, event):
         """
         右键菜单
@@ -832,21 +797,23 @@ class TransparentWindow(QtWidgets.QWidget):
             appearance_settings_action = menu.addAction("外观设置")
             pause_time_action = menu.addAction("暂停计时" if not self.is_paused else "继续计时")
             startup_action = menu.addAction("开机自启")
-            about_action = menu.addAction("关于软件")
             exit_action = menu.addAction("退出应用")
+            about_action = menu.addAction("关于")
 
             # 设置开机自启复选框状态
+
             is_startup = self.is_startup_enabled()
             startup_action.setCheckable(True)
             startup_action.setChecked(is_startup)
-
+            
             # 计算菜单位置，避免被遮挡
             screen_rect = QtWidgets.QApplication.primaryScreen().availableGeometry()
-            menu_x = event.globalPos().x()
-            menu_y = event.globalPos().y()
+            menu_x = event.globalPos().x()+20
+            menu_y = event.globalPos().y()+20
             menu_height = menu.sizeHint().height()
             if menu_y + menu_height > screen_rect.height():
                 menu_y = screen_rect.height() - menu_height
+            
 
             action = menu.exec(QtCore.QPoint(menu_x, menu_y))
             if action == reset_time_action:
@@ -862,13 +829,13 @@ class TransparentWindow(QtWidgets.QWidget):
                     self.enable_startup()
                 else:
                     self.disable_startup()
-            elif action == about_action:  # 处理“关于”菜单项的点击事件
+            elif action == about_action:
                 self.show_about_dialog()
             elif action == exit_action:
                 self.close()
         except Exception as e:
             QtWidgets.QMessageBox.warning(self, "右键菜单错误", f"打开右键菜单时发生错误: {e}")
-
+    
     def open_appearance_settings(self):
         """
         打开外观设置对话框
@@ -1118,6 +1085,7 @@ class TransparentWindow(QtWidgets.QWidget):
             # 释放共享内存
             shared_memory.detach()
             event.accept()
+            QtWidgets.QApplication.quit()  # 确保应用程序退出
         except Exception as e:
             QtWidgets.QMessageBox.warning(self, "关闭错误", f"关闭窗口时发生错误: {e}")
             event.ignore()
@@ -1126,53 +1094,75 @@ class TransparentWindow(QtWidgets.QWidget):
         """
         检查是否设置了开机自启
         """
+        task_name = "MyTransparentAppTask"
         try:
-            key = winreg.OpenKey(winreg.HKEY_CURRENT_USER,
-                                 r"Software\Microsoft\Windows\CurrentVersion\Run",
-                                 0, winreg.KEY_READ)
-            value, regtype = winreg.QueryValueEx(key, "MyTransparentApp")
-            winreg.CloseKey(key)
-            return True
-        except FileNotFoundError:
+            result = subprocess.run(
+                ["schtasks", "/Query", "/TN", task_name],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                creationflags=0x08000000,
+                text=True,
+                encoding='utf-8',
+                errors='ignore',
+                timeout=1  # 设置超时时间为1秒
+            )
+            return result.returncode == 0
+        except subprocess.TimeoutExpired:
+            print("查询开机自启状态超时")
             return False
+        except Exception as e:
+            print(f"Error in is_startup_enabled: {e}")
+            return False
+
 
     def enable_startup(self):
         """
         设置开机自启
         """
         try:
-            key = winreg.OpenKey(winreg.HKEY_CURRENT_USER,
-                                r"Software\Microsoft\Windows\CurrentVersion\Run",
-                                0, winreg.KEY_SET_VALUE)
-            if getattr(sys, 'frozen', False):
-                # 如果程序是打包成exe的
-                exe_path = sys.executable
-            else:
-                # 如果程序是以脚本形式运行的
-                exe_path = os.path.abspath(sys.argv[0])
-                # 如果是脚本，建议将其转换为可执行文件或使用完整路径
-            # 添加双引号以处理路径中的空格
-            winreg.SetValueEx(key, "MyTransparentApp", 0, winreg.REG_SZ, f'"{exe_path}"')
-            winreg.CloseKey(key)
+            # exe_path = sys.executable if getattr(sys, 'frozen', False) else os.path.abspath(sys.argv[0])
+            exe_path = sys.argv[0]
+            task_name = "MyTransparentAppTask"
+            
+            # 创建任务计划程序任务
+            subprocess.run([
+                "schtasks",
+                "/Create",
+                "/TN", task_name,
+                "/TR", f'"{exe_path}"',
+                "/SC", "ONLOGON",
+                "/RL", "HIGHEST",
+                "/F"  # 强制创建，覆盖同名任务
+            ], 
+            check=True,
+            creationflags=0x08000000)
+            
             QtWidgets.QMessageBox.information(self, "开机自启", "已启用开机自启。")
-        except Exception as e:
-            QtWidgets.QMessageBox.warning(self, "开机自启", f"设置开机自启失败: {e}")
+        except subprocess.CalledProcessError as e:
+            QtWidgets.QMessageBox.warning(self, "开机自启", f"设置开机自启失败: {e.stderr}")
+        except FileNotFoundError as e:
+            QtWidgets.QMessageBox.warning(self, "开机自启", f"schtasks 未找到: {e}")
 
     def disable_startup(self):
         """
         取消开机自启
         """
         try:
-            key = winreg.OpenKey(winreg.HKEY_CURRENT_USER,
-                                 r"Software\Microsoft\Windows\CurrentVersion\Run",
-                                 0, winreg.KEY_SET_VALUE)
-            winreg.DeleteValue(key, "MyTransparentApp")
-            winreg.CloseKey(key)
+            task_name = "MyTransparentAppTask"
+            
+            # 删除任务计划程序任务
+            subprocess.run([
+                "schtasks",
+                "/Delete",
+                "/TN", task_name,
+                "/F"  # 强制删除，不提示
+            ], check=True,creationflags=0x08000000)
+            
             QtWidgets.QMessageBox.information(self, "开机自启", "已取消开机自启。")
-        except FileNotFoundError:
-            QtWidgets.QMessageBox.information(self, "开机自启", "开机自启未启用。")
-        except Exception as e:
-            QtWidgets.QMessageBox.warning(self, "开机自启", f"取消开机自启失败: {e}")
+        except subprocess.CalledProcessError as e:
+            QtWidgets.QMessageBox.warning(self, "开机自启", f"取消开机自启失败: {e.stderr}")
+        except FileNotFoundError as e:
+            QtWidgets.QMessageBox.warning(self, "开机自启", f"schtasks 未找到: {e}")
 
 def main():
     global shared_memory
