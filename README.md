@@ -1,16 +1,17 @@
 
-# ShowTime - 透明窗口时光追踪器
+# ShowTime - 时光追踪器
 
-![主界面截图](https://github.com/liaanj/ShowTime/blob/main/doc/image.png)
-*主界面显示解锁时间和应用使用时间。*
+<div align=center>
+<img src="https://github.com/liaanj/ShowTime/blob/main/doc/icons.ico" width="170px">
+</div>
+<p></p><p></p>
 
-**ShowTime** 是一款基于 PySide6 开发的 Windows 专用透明窗口应用，旨在帮助用户追踪系统解锁时间和当前应用的使用时长。通过智能的全屏检测与隐藏功能，ShowTime 为您的时间管理提供直观且不干扰的支持，让您更高效地掌控每一分每一秒。
+**ShowTime** 是一款基于 PySide6 开发的 Windows 的应用，旨在帮助用户追踪系统解锁时间和当前应用的使用时长。
 
-## 软件推荐
+在快节奏的现代生活中，我们常常会发现自己在不知不觉中浪费了大量时间。例如，您可能会在 B 站刷视频，一个小时的娱乐时间很快就过去了，却没有任何实际收获。
 
-在快节奏的现代生活中，我们常常会发现自己在不知不觉中浪费了大量时间。例如，您可能会在 B 站刷视频，一个小时的娱乐时间很快就过去了，却没有任何实际收获。这样的时间浪费不仅影响了工作和学习效率，还可能导致生活质量的下降。
+**ShowTime** 正是为了解决这些问题而设计的。它通过任务栏透明窗口的形式，实时显示您自上次解锁系统以来的时间和当前应用程序的使用时长，帮助您时刻关注自己的时间分配，避免无意识的时间浪费。无论是工作中的高效利用，还是娱乐时的自律管理，ShowTime 都能成为您的得力助手。
 
-**ShowTime** 正是为了解决这些问题而设计的。它通过透明窗口的形式，实时显示您自上次解锁系统以来的时间和当前应用程序的使用时长，帮助您时刻关注自己的时间分配，避免无意识的时间浪费。无论是工作中的高效利用，还是娱乐时的自律管理，ShowTime 都能成为您的得力助手。
 
 ### 为什么选择 ShowTime？
 
@@ -19,38 +20,32 @@
 - **高度可定制**：多种外观设置，包括字体大小、颜色、窗口尺寸、进度条颜色与位置，满足您的个性化需求。
 - **提醒功能**：根据设定的时间提醒您，帮助您及时调整使用习惯，提升时间管理能力。
 - **开机自启**：可选择设置程序开机自动启动，随时随地掌控您的时间。
-- **多屏幕支持**：优化多显示器环境，仅在主屏幕上下边缘进行窗口隐藏，确保操作便捷。
 
 通过 **ShowTime**，您可以有效减少在无意义应用上的时间投入，提升工作和生活的效率与质量。立即下载并体验 ShowTime，让时间管理变得更加轻松高效！
 
-## 主要功能
-
-- **解锁时间追踪**：实时记录自上次解锁系统以来的时间。
-- **应用使用时间追踪**：追踪当前活跃应用程序的使用时长。
-- **全屏隐藏模式**：在全屏应用启动时自动隐藏窗口，避免干扰。
-- **提醒功能**：根据解锁时间或应用使用时间设置提醒通知。
-- **自定义外观设置**：
-  - 字体大小与颜色
-  - 窗口尺寸与位置
-  - 进度条颜色与位置
-- **开机自启**：可选择设置程序开机自动启动。
-- **多屏幕支持**：支持多显示器环境，仅在主屏幕上下边缘进行窗口隐藏。
-
-## 截图
-
 ### 主界面
 
-![主界面](https://github.com/您的用户名/ShowTime/raw/main/screenshots/main_interface.png)
-*主界面显示解锁时间和应用使用时间。*
+<p >
+  <img src="https://github.com/liaanj/ShowTime/blob/main/doc/mainwin1.png" width="180px">
+  <img src="https://github.com/liaanj/ShowTime/blob/main/doc/mainwin4.PNG" width="280px">
+  <img src="https://github.com/liaanj/ShowTime/blob/main/doc/mainwin6.png" width="280px">
+</p>
+
+
+<p></p><p></p>
+
+*主界面显示解锁时间和应用使用时间*
 
 ### 设置界面
 
-![设置界面](https://github.com/您的用户名/ShowTime/raw/main/screenshots/settings_interface.png)
-*设置界面允许用户自定义外观和功能。*
+<img src="https://github.com/liaanj/ShowTime/blob/main/doc/appsetting.png" width="270px">
+
+*设置界面允许用户自定义外观和功能*
 
 ### 提醒设置
 
-![提醒设置](https://github.com/您的用户名/ShowTime/raw/main/screenshots/reminder_settings.png)
+<img src="https://github.com/liaanj/ShowTime/blob/main/doc/time.png" width="270px">
+
 *提醒设置界面，帮助用户配置提醒通知。*
 
 ## 安装指南
